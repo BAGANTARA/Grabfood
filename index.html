@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Gapura Surya Majapahit - Cyber-Keraton System HUD</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Luxury Royal Serif & High-Tech Monospace -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;900&family=Marcellus&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cosmic: {
+              obsidian: '#02050A',
+              night: '#040A18',
+              deepNavy: '#07152B',
+              navy: '#0B203E',
+              royal: '#112F5B'
+            },
+            javanese: {
+              goldHighlight: '#FFFBEA',
+              goldLight: '#F7E7B4',
+              goldBase: '#D4AF37',
+              goldOchre: '#B8860B',
+              goldBronze: '#996515',
+              goldDark: '#754A0E',
+              goldDeep: '#382104',
+              ruby: '#9B111E',
+              rubyGlow: '#FF385C'
+            }
+          },
+          fontFamily: {
+            royal: ['"Cinzel Decorative"', 'serif'],
+            serifRoyal: ['"Cinzel"', 'serif'],
+            classical: ['"Marcellus"', 'serif'],
+            telemetry: ['"Share Tech Mono"', 'monospace'],
+            tech: ['"Rajdhani"', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --gold-hi: #FFFBEA;
+      --gold-light: #F7E7B4;
+      --gold-mid: #D4AF37;
+      --gold-dark: #754A0E;
+      --gold-deep: #382104;
+      --panel-top: #0E2548;
+      --panel-bot: #040E1E;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 48%, #0D2447 0%, #061327 45%, #02050A 100%);
+      color: #F7E7B4;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      perspective: 1200px;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* 3D Chiseled Keraton Outer Panel Container */
+    .chiseled-keraton-panel {
+      position: relative;
+      background: radial-gradient(ellipse at 50% 25%, #102B52 0%, #07172F 65%, #030A17 100%);
+      border: 2.5px solid #D4AF37;
+      border-radius: 12px;
+      box-shadow: 
+        0 0 0 1px #FFF5D0,
+        0 0 0 3px #553406,
+        0 0 0 5px #9F6E1C,
+        0 0 0 7px #271603,
+        inset 0 0 25px rgba(0, 0, 0, 0.95),
+        inset 0 2px 4px rgba(255, 245, 208, 0.5),
+        0 20px 40px -10px rgba(0, 0, 0, 0.95),
+        0 0 25px rgba(212, 175, 55, 0.28);
+    }
+
+    /* Inner Filigree Framing Inset with Micro-Relief */
+    .inner-filigree-frame {
+      position: relative;
+      border: 1.5px solid rgba(212, 175, 55, 0.65);
+      border-radius: 7px;
+      box-shadow: 
+        inset 0 0 0 1px rgba(255, 245, 208, 0.2),
+        inset 0 0 12px rgba(0, 0, 0, 0.85),
+        0 0 6px rgba(212, 175, 55, 0.2);
+    }
+
+    /* 3D Arched Header Cartouche Plaque with Embossed Bevel */
+    .arched-header-plaque {
+      position: relative;
+      background: linear-gradient(180deg, #7A4E13 0%, #462A07 50%, #201102 100%);
+      border: 1.5px solid #E2BE4F;
+      border-radius: 6px;
+      box-shadow: 
+        inset 0 2px 1px #FFF8DB,
+        inset 0 -2px 3px #000000,
+        0 4px 12px rgba(0, 0, 0, 0.9),
+        0 0 14px rgba(212, 175, 55, 0.45);
+      text-shadow: 
+        0 1px 2px #000000,
+        0 0 10px rgba(247, 231, 180, 0.8);
+    }
+
+    /* Golden Metallic Gradient Typography with Chiseled Shadow */
+    .chiseled-gold-text {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFF4CC 20%, #E5BE4A 60%, #8F5E13 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.95));
+    }
+
+    @keyframes astrolabeSpinCW {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes astrolabeSpinCCW {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    @keyframes coreHeartbeat {
+      0%, 100% {
+        filter: drop-shadow(0 0 22px rgba(212, 175, 55, 0.65)) drop-shadow(0 0 55px rgba(212, 175, 55, 0.35));
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.95)) drop-shadow(0 0 95px rgba(255, 180, 0, 0.55));
+        transform: scale(1.025);
+      }
+    }
+
+    @keyframes scanBeam {
+      0% { top: -20%; opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 120%; opacity: 0; }
+    }
+
+    @keyframes lightRaysPulse {
+      0%, 100% { opacity: 0.35; transform: rotate(0deg) scale(0.97); }
+      50% { opacity: 0.72; transform: rotate(180deg) scale(1.05); }
+    }
+
+    /* Fast Background Spin (Anti-lag hardware acceleration) */
+    .rot-astrolabe-cw {
+      animation: astrolabeSpinCW 3.5s linear infinite; 
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .rot-astrolabe-ccw {
+      animation: astrolabeSpinCCW 4.5s linear infinite; 
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    /* Slow Logo Spin */
+    .slow-spin {
+      animation: astrolabeSpinCW 20s linear infinite; 
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .core-breathing {
+      animation: coreHeartbeat 3.5s ease-in-out infinite;
+    }
+
+    /* Scanner Elements */
+    .scan-line {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #FFFBEA;
+      box-shadow: 0 0 10px 2px #D4AF37, 0 0 25px 4px #FFD700;
+      animation: scanBeam 2.5s ease-in-out infinite;
+      z-index: 20;
+    }
+    
+    .scan-overlay {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, rgba(212,175,55,0.4), transparent);
+      animation: scanBeam 2.5s ease-in-out infinite;
+      z-index: 19;
+    }
+
+    .light-shafts {
+      animation: lightRaysPulse 16s ease-in-out infinite;
+    }
+
+    /* 3D Dynamic Tilt Wrapper */
+    #hud-3d-stage {
+      transition: transform 0.15s ease-out;
+      transform-style: preserve-3d;
+    }
+
+    /* Molten Gold Sensor Slider */
+    .molten-gold-bar {
+      background: linear-gradient(90deg, #6C4410 0%, #D4AF37 35%, #FFF8D6 55%, #D4AF37 75%, #6C4410 100%);
+      background-size: 200% 100%;
+      animation: goldFlow 2.8s linear infinite;
+    }
+
+    @keyframes goldFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* GrabFood Sequence Styles */
+    .hidden-state { display: none !important; }
+
+    #sequence-video {
+        position: fixed; inset: 0; width: 100%; height: 100%;
+        object-fit: contain; background-color: #000; z-index: 9999;
+    }
+  </style>
+</head>
+
+<body class="h-screen w-screen p-0 m-0 bg-cosmic-obsidian relative select-none overflow-hidden">
+  
+  <!-- MEDIA PRELOADER -->
+  <audio id="sequence-audio" src="https://d.top4top.io/m_3905xw2k00.mp3" preload="auto"></audio>
+  <video id="sequence-video" src="https://j.top4top.io/m_39055put20.mp4" playsinline preload="auto" class="hidden-state"></video>
+
+  <!-- ========================================== -->
+  <!-- STATE 1: JAVANESE CYBER-KERATON HUD        -->
+  <!-- ========================================== -->
+  <div id="hologram-state" class="absolute inset-0 w-full h-full flex flex-col items-center justify-center">
+    
+    <canvas id="cosmic-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- High-Precision SVG Filter Definitions -->
+    <svg class="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+      <defs>
+        <!-- Deep 3D Metal Chisel Filter with Specular Glint -->
+        <filter id="chiselGold3D" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="1.8" result="blur"/>
+          <feSpecularLighting in="blur" surfaceScale="5.5" specularConstant="1.4" specularExponent="25" lighting-color="#FFF8E0" result="specOut">
+            <feDistantLight azimuth="225" elevation="50"/>
+          </feSpecularLighting>
+          <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specIn"/>
+          <feComposite in="SourceGraphic" in2="specIn" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+          <feDropShadow dx="1.5" dy="3.5" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.95"/>
+        </filter>
+
+        <!-- Royal Metallic Gold Multi-Gradient -->
+        <linearGradient id="royalGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFFBE8"/>
+          <stop offset="18%" stop-color="#F7E4A8"/>
+          <stop offset="42%" stop-color="#D4AF37"/>
+          <stop offset="75%" stop-color="#8F5E13"/>
+          <stop offset="100%" stop-color="#382104"/>
+        </linearGradient>
+
+        <!-- Specular Highlight Linear Gradient -->
+        <linearGradient id="goldSpecGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#FFFFFF"/>
+          <stop offset="25%" stop-color="#FFF5D0"/>
+          <stop offset="65%" stop-color="#C59B27"/>
+          <stop offset="100%" stop-color="#4E2F05"/>
+        </linearGradient>
+
+        <!-- Antique Carved Brass Radial Gradient -->
+        <radialGradient id="brassRelief3D" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FFF7DC"/>
+          <stop offset="35%" stop-color="#E1BF54"/>
+          <stop offset="70%" stop-color="#8A5A12"/>
+          <stop offset="100%" stop-color="#261502"/>
+        </radialGradient>
+
+        <!-- Ruby Gemstone Cabochon Gradient -->
+        <radialGradient id="rubyCabochon3D" cx="32%" cy="30%" r="68%">
+          <stop offset="0%" stop-color="#FFB3C2"/>
+          <stop offset="22%" stop-color="#FF244D"/>
+          <stop offset="60%" stop-color="#9B111E"/>
+          <stop offset="85%" stop-color="#4A000A"/>
+          <stop offset="100%" stop-color="#1F0004"/>
+        </radialGradient>
+
+        <!-- Authentic Javanese Corner Bracket (Lung Gandrung / Pucuk Rebung) Motif -->
+        <g id="javaneseCornerOrnament">
+          <!-- Outer Chiseled Scroll -->
+          <path d="M 0,0 L 26,0 C 22,5 18,8 14,8 C 10,8 8,10 8,14 C 8,18 5,22 0,26 Z" fill="url(#royalGoldGrad)" stroke="#382104" stroke-width="1"/>
+          <!-- Inner Spiraling Leaf Tendril -->
+          <path d="M 4,4 C 12,4 16,8 16,16 C 16,18 14,20 12,18 C 10,16 12,12 8,8 C 5,5 3,5 1,5" fill="none" stroke="#FFF7D6" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="6" cy="6" r="2.2" fill="#FFFBE8" stroke="#754A0E" stroke-width="0.6"/>
+          <circle cx="16" cy="3" r="1.2" fill="#FFFBE8"/>
+          <circle cx="3" cy="16" r="1.2" fill="#FFFBE8"/>
+        </g>
+      </defs>
+    </svg>
+
+    <!-- WATERMARK RELIEF: Lintang Kartika / Pranata Mangsa Bas-Relief Wheel (Slow BG) -->
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.24] z-0 overflow-hidden mix-blend-screen">
+      <svg class="w-[195vh] h-[195vh] max-w-none slow-spin text-amber-400" viewBox="0 0 1000 1000" fill="none" stroke="currentColor">
+        <!-- Outer Concentric Astrological Borders -->
+        <circle cx="500" cy="500" r="490" stroke-width="2.5" stroke="url(#royalGoldGrad)"/>
+        <circle cx="500" cy="500" r="478" stroke-width="1" stroke-dasharray="4 6"/>
+        <circle cx="500" cy="500" r="445" stroke-width="1.8" stroke="url(#royalGoldGrad)"/>
+        <circle cx="500" cy="500" r="375" stroke-width="1.2" stroke-dasharray="12 8 3 8"/>
+        <circle cx="500" cy="500" r="310" stroke-width="1.5" stroke="url(#royalGoldGrad)"/>
+
+        <!-- 12 Radiating Constellation Rays -->
+        <g stroke-width="1" stroke="rgba(247, 231, 180, 0.65)">
+          <line x1="500" y1="10" x2="500" y2="990" />
+          <line x1="10" y1="500" x2="990" y2="500" />
+          <line x1="153" y1="153" x2="847" y2="847" />
+          <line x1="153" y1="847" x2="847" y2="153" />
+          <line x1="250" y1="67" x2="750" y2="933" stroke-dasharray="6 6"/>
+          <line x1="67" y1="250" x2="933" y2="750" stroke-dasharray="6 6"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Volumetric Golden Sun Rays Radiating from Center -->
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden mix-blend-screen">
+      <svg class="w-[140vh] h-[140vh] max-w-none light-shafts opacity-45 text-yellow-500" viewBox="0 0 800 800">
+        <defs>
+          <radialGradient id="sunBeamGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FFD700" stop-opacity="0.48"/>
+            <stop offset="40%" stop-color="#D4AF37" stop-opacity="0.2"/>
+            <stop offset="80%" stop-color="#996515" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g fill="url(#sunBeamGrad)">
+          <polygon points="400,400 370,0 430,0"/>
+          <polygon points="400,400 370,800 430,800"/>
+          <polygon points="400,400 0,370 0,430"/>
+          <polygon points="400,400 800,370 800,430"/>
+          <polygon points="400,400 120,120 160,80"/>
+          <polygon points="400,400 680,680 640,720"/>
+          <polygon points="400,400 120,680 80,640"/>
+          <polygon points="400,400 680,120 720,160"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Top Floating Controls: Gong Audio & Fullscreen -->
+    <nav class="absolute top-2.5 left-0 right-0 max-w-[460px] mx-auto px-4 z-50 flex justify-between pointer-events-auto">
+      <button id="audio-toggle-btn" class="flex items-center gap-2 px-3 py-1 rounded-full border border-javanese-goldBase/70 bg-cosmic-obsidian/85 backdrop-blur text-[11px] font-tech text-javanese-goldLight tracking-wider hover:border-javanese-goldHighlight transition shadow-lg">
+        <span id="audio-icon" class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+        <span id="audio-text">GONG AUDIO: OFF</span>
+      </button>
+      <button id="fullscreen-btn" class="flex items-center gap-1.5 px-3 py-1 rounded-full border border-javanese-goldBase/70 bg-cosmic-obsidian/85 backdrop-blur text-[11px] font-tech text-javanese-goldLight tracking-wider hover:border-javanese-goldHighlight transition shadow-lg">
+        <svg class="w-3 h-3 text-javanese-goldBase" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+        </svg>
+        <span>FULL HUD</span>
+      </button>
+    </nav>
+
+    <!-- MAIN CYBER-MAJAPAHIT HUD STAGE -->
+    <main id="hud-3d-stage" class="relative z-10 w-full h-full max-w-[445px] max-h-[920px] flex flex-col justify-between p-3.5 sm:p-4 pt-10 sm:pt-11 select-none">
+      
+      <!-- ZONA ATAS: DUAL TELEMETRY HUD PANELS -->
+      <header class="w-full grid grid-cols-2 gap-3 flex-shrink-0 z-20">
+        <!-- Panel Kiri: KATRANGAN SISTEM -->
+        <section class="chiseled-keraton-panel p-2.5 pt-4 flex flex-col justify-between">
+          <div class="absolute -top-1.5 -left-1.5 w-6 h-6 pointer-events-none"><svg viewBox="0 0 26 26" class="w-full h-full"><use href="#javaneseCornerOrnament"/></svg></div>
+          <div class="absolute -top-1.5 -right-1.5 w-6 h-6 pointer-events-none"><svg viewBox="0 0 26 26" class="w-full h-full" style="transform: scaleX(-1);"><use href="#javaneseCornerOrnament"/></svg></div>
+          <div class="absolute -bottom-1.5 -left-1.5 w-6 h-6 pointer-events-none"><svg viewBox="0 0 26 26" class="w-full h-full" style="transform: scaleY(-1);"><use href="#javaneseCornerOrnament"/></svg></div>
+          <div class="absolute -bottom-1.5 -right-1.5 w-6 h-6 pointer-events-none"><svg viewBox="0 0 26 26" class="w-full h-full" style="transform: scale(-1);"><use href="#javaneseCornerOrnament"/></svg></div>
+
+          <div class="arched-header-plaque py-1 px-2 text-center mb-2.5">
+            <h2 class="font-royal text-[11px] sm:text-[12px] tracking-widest text-javanese-goldLight font-bold">KATRANGAN SISTEM</h2>
+          </div>
+
+          <div class="inner-filigree-frame p-2 space-y-1 sm:space-y-1.5 text-[11.5px] sm:text-[12px] font-tech font-bold bg-cosmic-navy/40">
+            <div class="flex justify-between items-center border-b border-javanese-goldDark/35 pb-0.5"><span class="text-javanese-goldLight/70 tracking-wider">OS:</span><span id="data-os" class="font-telemetry text-javanese-goldLight tracking-tight text-right">ANDROID OS</span></div>
+            <div class="flex justify-between items-center border-b border-javanese-goldDark/35 pb-0.5"><span class="text-javanese-goldLight/70 tracking-wider">CORES:</span><span id="data-cores" class="font-telemetry text-javanese-goldLight tracking-tight">8 CORES</span></div>
+            <div class="flex justify-between items-center border-b border-javanese-goldDark/35 pb-0.5"><span class="text-javanese-goldLight/70 tracking-wider">MEMORY:</span><span id="data-memory" class="font-telemetry text-javanese-goldLight tracking-tight">8GB</span></div>
+            <div class="flex justify-between items-center border-b border-javanese-goldDark/35 pb-0.5"><span class="text-javanese-goldLight/70 tracking-wider">DISPLAY:</span><span id="data-display" class="font-telemetry text-javanese-goldLight tracking-tight">720x1612</span></div>
+            <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">LANG:</span><span id="data-lang" class="font-telemetry text-javanese-goldLight tracking-tight">ID-10</span></div>
+          </div>
+        </section>
+
+        <!-- Panel Kanan: DAYA & JARINGAN -->
+        <section class="chiseled-keraton-panel p-2.5 pt-4 flex flex-col justify-between">
+          <div class="absolute -top-1.5 -left-1.5 w-6 h-6 pointer-events-none"><svg viewBox="0 0 26 26" class="w-full h-full"><use href="#javaneseCornerOrnament"/></svg></div>
+          <div class="absolute -top-1.5 -right-1.5 w-6 h-6 pointer-events-none"><svg viewBox="0 0 26 26" class="w-full h-full" style="transform: scaleX(-1);"><use href="#javaneseCornerOrnament"/></svg></div>
+          <div class="absolute -bottom-1.5 -left-1.5 w-6 h-6 pointer-events-none"><svg viewBox="0 0 26 26" class="w-full h-full" style="transform: scaleY(-1);"><use href="#javaneseCornerOrnament"/></svg></div>
+          <div class="absolute -bottom-1.5 -right-1.5 w-6 h-6 pointer-events-none"><svg viewBox="0 0 26 26" class="w-full h-full" style="transform: scale(-1);"><use href="#javaneseCornerOrnament"/></svg></div>
+
+          <div class="arched-header-plaque py-1 px-2 text-center mb-2.5">
+            <h2 class="font-royal text-[11px] sm:text-[12px] tracking-widest text-javanese-goldLight font-bold">DAYA &amp; JARINGAN</h2>
+          </div>
+
+          <div class="inner-filigree-frame p-2 space-y-1 sm:space-y-1.5 text-[11.5px] sm:text-[12px] font-tech font-bold bg-cosmic-navy/40">
+            <div class="flex justify-between items-center border-b border-javanese-goldDark/35 pb-0.5"><span class="text-javanese-goldLight/70 tracking-wider">BATT:</span><span id="data-batt" class="font-telemetry text-javanese-goldLight tracking-tight">96%</span></div>
+            <div class="flex justify-between items-center border-b border-javanese-goldDark/35 pb-0.5"><span class="text-javanese-goldLight/70 tracking-wider">STATE:</span><span id="data-state" class="font-telemetry text-emerald-400 tracking-tight">CHARGING</span></div>
+            <div class="flex justify-between items-center border-b border-javanese-goldDark/35 pb-0.5"><span class="text-javanese-goldLight/70 tracking-wider">CONN:</span><span id="data-conn" class="font-telemetry text-javanese-goldLight tracking-tight">4G</span></div>
+            <div class="flex justify-between items-center border-b border-javanese-goldDark/35 pb-0.5"><span class="text-javanese-goldLight/70 tracking-wider">P-PING:</span><span id="data-ping" class="font-telemetry text-javanese-goldLight tracking-tight">0 ms</span></div>
+            <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">D-LINK:</span><span id="data-dlink" class="font-telemetry text-javanese-goldLight tracking-tight">9.9 Mbps</span></div>
+          </div>
+        </section>
+      </header>
+
+      <!-- ZONA TENGAH: THE ROYAL SURYA MAJAPAHIT CORE (3D GATE) -->
+      <section class="w-full flex-1 flex flex-col items-center justify-center relative my-1 sm:my-2 cursor-pointer group" id="core-gate-trigger" title="Sentuh Logo untuk Membuka Sistem">
+        
+        <div class="absolute w-[295px] h-[295px] sm:w-[335px] sm:h-[335px] rounded-full bg-radial from-amber-400/30 via-yellow-600/12 to-transparent blur-2xl pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
+
+        <div class="relative w-[290px] h-[290px] sm:w-[330px] sm:h-[330px] flex items-center justify-center">
+          
+          <svg id="surya-svg" class="absolute inset-0 w-full h-full drop-shadow-[0_0_28px_rgba(212,175,55,0.6)] transition-transform duration-500" viewBox="0 0 600 600">
+            
+            <g class="rot-astrolabe-cw" style="transform-origin: 300px 300px;">
+              <circle cx="300" cy="300" r="280" fill="none" stroke="url(#royalGoldGrad)" stroke-width="8.5"/>
+              <circle cx="300" cy="300" r="270" fill="none" stroke="#3D2506" stroke-width="3"/>
+              <circle cx="300" cy="300" r="264" fill="none" stroke="url(#goldSpecGrad)" stroke-width="2.5" stroke-dasharray="4 6"/>
+
+              <g id="astrolabe-gear-teeth" fill="url(#royalGoldGrad)">
+                <polygon points="300,10 307,24 293,24"/>
+                <polygon points="300,590 307,576 293,576"/>
+                <polygon points="10,300 24,307 24,293"/>
+                <polygon points="590,300 576,307 576,293"/>
+                <polygon points="95,95 110,102 102,110"/>
+                <polygon points="505,505 490,498 498,490"/>
+                <polygon points="95,505 110,498 102,490"/>
+                <polygon points="505,95 490,102 498,110"/>
+                <circle cx="300" cy="30" r="3.2" fill="#FFF"/>
+                <circle cx="300" cy="570" r="3.2" fill="#FFF"/>
+                <circle cx="30" cy="300" r="3.2" fill="#FFF"/>
+                <circle cx="570" cy="300" r="3.2" fill="#FFF"/>
+              </g>
+
+              <circle cx="300" cy="300" r="250" fill="none" stroke="url(#royalGoldGrad)" stroke-width="18" stroke-opacity="0.3"/>
+              <circle cx="300" cy="300" r="250" fill="none" stroke="url(#goldSpecGrad)" stroke-width="2"/>
+              <circle cx="300" cy="300" r="240" fill="none" stroke="#2B1802" stroke-width="2"/>
+
+              <path d="M 300,60 A 240 240 0 0 1 540,300 M 540,300 A 240 240 0 0 1 300,540 M 300,540 A 240 240 0 0 1 60,300 M 60,300 A 240 240 0 0 1 300,60" 
+                    fill="none" stroke="#FFF7D6" stroke-width="1" stroke-dasharray="8 6 2 6" opacity="0.6"/>
+            </g>
+
+            <g class="rot-astrolabe-ccw" style="transform-origin: 300px 300px;">
+              <g stroke="url(#royalGoldGrad)" fill="url(#brassRelief3D)" fill-opacity="0.35" stroke-width="8">
+                <path d="M 300,60 A 240 240 0 0 1 540,300 A 150 150 0 0 0 300,150 Z"/>
+                <path d="M 540,300 A 240 240 0 0 1 300,540 A 150 150 0 0 0 450,300 Z"/>
+                <path d="M 300,540 A 240 240 0 0 1 60,300 A 150 150 0 0 0 300,450 Z"/>
+                <path d="M 60,300 A 240 240 0 0 1 300,60 A 150 150 0 0 0 150,300 Z"/>
+              </g>
+
+              <g stroke="#FFF8DB" stroke-width="1.2" fill="none" opacity="0.75">
+                <path d="M 315,95 C 410,130 480,205 505,300 C 475,235 410,185 315,145 Z"/>
+                <path d="M 505,315 C 470,410 395,480 300,505 C 365,475 415,410 455,315 Z"/>
+                <path d="M 285,505 C 190,470 120,395 95,300 C 125,365 190,415 285,455 Z"/>
+                <path d="M 95,285 C 130,190 205,120 300,95 C 235,125 185,190 145,285 Z"/>
+              </g>
+              <circle cx="300" cy="300" r="195" fill="none" stroke="url(#goldSpecGrad)" stroke-width="2.5" stroke-dasharray="6 4"/>
+            </g>
+          </svg>
+
+          <div id="logo-container" class="absolute inset-0 flex items-center justify-center z-20 transition-transform duration-500 pointer-events-none group-hover:scale-[1.03]">
+             <div class="core-breathing relative flex items-center justify-center rounded-full">
+                <img src="https://c.top4top.io/p_39061ehbh0.png" class="w-[170px] h-[170px] sm:w-[190px] sm:h-[190px] object-contain slow-spin drop-shadow-[0_0_15px_rgba(212,175,55,0.8)] rounded-full" alt="Main Cyber Keraton Logo">
+                <div class="absolute inset-0 w-[170px] h-[170px] sm:w-[190px] sm:h-[190px] m-auto rounded-full overflow-hidden pointer-events-none border border-javanese-goldBase/30">
+                   <div class="scan-line"></div>
+                   <div class="scan-overlay"></div>
+                </div>
+             </div>
+          </div>
+
+          <div class="absolute -bottom-2 sm:-bottom-2.5 flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cosmic-obsidian/95 border border-javanese-goldBase text-[9px] sm:text-[10px] font-tech text-javanese-goldLight tracking-widest uppercase shadow-lg pointer-events-none group-hover:border-javanese-goldHighlight group-hover:text-white transition z-30">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>CLICK LOGO TO ENTER SYSTEM</span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ZONA BAWAH: CONTROL DECK & STATUS MONITOR -->
+      <footer class="w-full chiseled-keraton-panel p-2.5 sm:p-3 flex-shrink-0 z-20 border-t-2 border-javanese-goldBase shadow-[0_-8px_30px_rgba(0,0,0,0.85)] relative mt-1">
+        
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 arched-header-plaque rounded-md px-7 py-0.5 z-30 shadow-xl border-2 border-javanese-goldBase flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rotate-45 bg-javanese-goldBase"></span>
+          <h1 class="font-royal text-[12px] sm:text-[13.5px] tracking-widest text-javanese-goldLight font-black whitespace-nowrap">NGAJENG INPUT</h1>
+          <span class="w-1.5 h-1.5 rotate-45 bg-javanese-goldBase"></span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2.5">
+          <div class="inner-filigree-frame p-2 flex flex-col justify-between border-r border-javanese-goldDark/50 bg-cosmic-navy/40">
+            <div class="flex justify-between items-center mb-1 border-b border-javanese-goldDark/40 pb-1">
+              <span class="font-royal text-[10px] sm:text-[11px] text-javanese-goldLight font-bold tracking-wider">SENSOR LANGSUNG</span>
+              <span id="live-clock" class="font-telemetry text-[10.5px] sm:text-[11.5px] text-amber-300 font-bold tracking-tight">09-52-16</span>
+            </div>
+            <div class="space-y-0.5 sm:space-y-1 text-[11px] sm:text-[12px] font-tech font-bold">
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">CPU_LOAD :</span><span id="sensor-cpu" class="font-telemetry text-javanese-goldLight">33%</span></div>
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">CORE_TEMP :</span><span id="sensor-core-temp" class="font-telemetry text-javanese-goldLight">43.3 °C</span></div>
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">BATT_TEMP :</span><span id="sensor-batt-temp" class="font-telemetry text-javanese-goldLight">34.5 °C</span></div>
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">SYS_VOLT :</span><span id="sensor-volt" class="font-telemetry text-javanese-goldLight">4.16 V</span></div>
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">LUX_SENSOR :</span><span id="sensor-lux" class="font-telemetry text-javanese-goldLight">768 lx</span></div>
+            </div>
+            <div class="mt-2 w-full">
+              <div class="w-full h-1.5 sm:h-2 bg-cosmic-obsidian rounded-full overflow-hidden border border-javanese-goldDark/80 p-[1px] shadow-inner relative">
+                <div id="gold-slider-fill" class="h-full rounded-full molten-gold-bar transition-all duration-300 relative" style="width: 33%;">
+                  <div class="absolute right-0 top-0 bottom-0 w-2 bg-white rounded-full shadow-[0_0_6px_#FFF]"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="inner-filigree-frame p-2 flex flex-col justify-between bg-cosmic-navy/40">
+            <div class="mb-1 border-b border-javanese-goldDark/40 pb-1">
+              <span class="font-royal text-[10px] sm:text-[11px] text-javanese-goldLight font-bold tracking-wider">LOKASI CEO</span>
+            </div>
+            <div class="space-y-0.5 sm:space-y-1 text-[11px] sm:text-[12px] font-tech font-bold">
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">ZONE :</span><span id="geo-zone" class="font-telemetry text-javanese-goldLight uppercase">JAKARTA</span></div>
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">ALTITUDE :</span><span id="geo-altitude" class="font-telemetry text-javanese-goldLight">-- m</span></div>
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">HEADING :</span><span id="geo-heading" class="font-telemetry text-javanese-goldLight">-- °N</span></div>
+              <div class="flex justify-between items-center"><span class="text-javanese-goldLight/70 tracking-wider">ACCURACY :</span><span id="geo-accuracy" class="font-telemetry text-javanese-goldLight">HIGH</span></div>
+            </div>
+            <div class="mt-2 flex items-center justify-end gap-1.5 text-right opacity-75">
+              <div class="w-2 h-2 rotate-45 border border-javanese-goldBase bg-amber-600/50"></div>
+              <div class="font-telemetry text-[8.5px] sm:text-[9.5px] text-javanese-goldDark tracking-tight leading-none">
+                UPS TRILATERATION<br><span class="text-javanese-goldLight font-bold">A22 NC</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2 pt-1 border-t border-javanese-goldDark/35 flex items-center justify-center gap-3 opacity-65">
+          <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-javanese-goldBase"></span>
+          <svg class="w-4 h-3 text-javanese-goldBase" viewBox="0 0 20 15" fill="currentColor">
+            <polygon points="10,0 20,15 0,15"/>
+          </svg>
+          <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-javanese-goldBase"></span>
+        </div>
+      </footer>
+
+    </main>
+
+    <!-- MODAL / WARP GATE ACCESS OVERLAY -->
+    <div id="access-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-500 p-4">
+      <div class="relative w-full max-w-md chiseled-keraton-panel rounded-2xl p-6 border-2 border-javanese-goldBase text-center shadow-[0_0_65px_rgba(212,175,55,0.75)] transform scale-90 transition-transform duration-500" id="modal-card">
+        
+        <div class="w-16 h-16 mx-auto mb-3">
+          <svg viewBox="0 0 100 100" fill="none">
+            <polygon points="50,6 66,42 96,48 72,74 80,100 50,84 20,100 28,74 4,48 34,42" fill="url(#royalGoldGrad)" stroke="#FFFBE8" stroke-width="2"/>
+            <circle cx="50" cy="54" r="14" fill="url(#rubyCabochon3D)" stroke="#FFF" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div class="arched-header-plaque py-1 px-4 inline-block rounded-md mb-3">
+          <span class="font-royal text-xs text-amber-300 tracking-widest font-black">GAPURA KAWEDHAR</span>
+        </div>
+
+        <h3 class="font-royal text-xl sm:text-2xl font-black chiseled-gold-text mb-2">WILUJENG RAWUH</h3>
+        
+        <p class="font-tech text-sm text-javanese-goldLight/90 tracking-wide mb-5 leading-relaxed">
+          OTORISASI KASULTANAN MAJAPAHIT DITERIMA.<br>
+          Koneksi Quantum Node terverifikasi aman. Seluruh subsistem telemetri aktif dalam sinkronisasi lintang kartika.
+        </p>
+
+        <div class="bg-black/60 rounded-lg p-3 border border-javanese-goldDark/50 mb-5 font-telemetry text-xs text-left space-y-1 text-javanese-goldLight">
+          <div class="flex justify-between"><span class="text-javanese-goldLight/60">GATEWAY ID:</span><span>SM-8842-CYBER</span></div>
+          <div class="flex justify-between"><span class="text-javanese-goldLight/60">TIMESTAMP:</span><span id="modal-timestamp">--</span></div>
+          <div class="flex justify-between"><span class="text-javanese-goldLight/60">CLEARANCE:</span><span class="text-emerald-400 font-bold">TINGKAT 1 (SULTAN/CEO)</span></div>
+        </div>
+
+        <div class="flex gap-3 justify-center">
+          <button id="close-modal-btn" class="arched-header-plaque px-6 py-2 rounded-lg font-royal text-xs tracking-wider text-javanese-goldLight hover:scale-105 active:scale-95 transition shadow-lg border border-javanese-goldBase">
+            KEMBALI
+          </button>
+          <button id="enter-core-btn" class="bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700 text-black font-royal font-black px-6 py-2 rounded-lg text-xs tracking-wider hover:brightness-125 active:scale-95 transition shadow-[0_0_15px_rgba(212,175,55,0.8)]">
+            MASUK KONSOL
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- STATE 2: TAMPILAN ORDERAN GRABFOOD         -->
+  <!-- ========================================== -->
+  <div id="order-popup-state" class="hidden-state fixed inset-0 z-[100]">
+      <div class="absolute inset-0 bg-black/70 flex flex-col justify-end">
+          <div class="bg-[#f3f4f6] rounded-t-3xl p-4 pb-8 opacity-30">
+              <div class="flex gap-3 mb-6">
+                  <div class="flex-1 bg-[#e0e5e9] h-12 rounded-full flex items-center pl-4 gap-3">
+                       <div class="w-6 h-6 bg-[#cdd3d8] rounded-full"></div>
+                       <span class="text-[#00796a] font-semibold text-lg">1 • Collect Order</span>
+                  </div>
+                  <div class="flex flex-col items-center justify-center px-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                      </svg>
+                      <span class="text-xs text-gray-600 font-medium">Gambaran</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="absolute inset-0 flex flex-col items-center justify-center px-4 pb-20">
+          <div class="w-full max-w-sm rounded-xl overflow-hidden shadow-2xl relative z-10">
+              <div class="bg-[#565861] py-4 text-center">
+                  <h2 class="text-white text-lg font-medium tracking-wide">GrabFood • Slot pilihan</h2>
+              </div>
+              <div class="bg-[#2a2b2f] flex flex-col items-center py-8 px-4">
+                  <p class="text-white text-[1.15rem] text-center mb-8 font-medium leading-snug">
+                      Orderan Turbo sudah diterima otomatis!
+                  </p>
+                  <div class="w-32 h-32 rounded-full bg-[#42c462] flex items-center justify-center mb-8 relative shadow-lg">
+                      <svg class="w-20 h-20 text-[#2a2b2f]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="3" stroke-linecap="butt" stroke-linejoin="miter"/>
+                      </svg>
+                  </div>
+                  <div class="text-center mb-2">
+                      <p class="text-gray-300 text-sm mb-1">Estimasi pengantaran tiba pada</p>
+                      <p id="dynamic-time" class="text-white text-xl font-bold tracking-wider">--:--</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <div class="absolute bottom-8 left-0 right-0 text-center z-[110]">
+           <p class="text-white text-lg font-medium animate-pulse">Tekan di mana saja untuk melanjutkan.</p>
+      </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT: LOGIKA GABUNGAN                -->
+  <!-- ========================================== -->
+  <script>
+    /* 1. JAVANESE BRONZE GONG SYNTHESIZER (WEB AUDIO API) */
+    let audioCtx = null;
+    let audioEnabled = false;
+
+    function initAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      audioEnabled = true;
+      document.getElementById('audio-icon').className = "w-2 h-2 rounded-full bg-emerald-400";
+      document.getElementById('audio-text').innerText = "GONG AUDIO: ON";
+    }
+
+    function playGongChime() {
+      if (!audioCtx || !audioEnabled) return;
+
+      const now = audioCtx.currentTime;
+      const fundamentals = [108, 218, 327, 436, 654];
+      const gains = [0.65, 0.38, 0.2, 0.08, 0.04];
+
+      fundamentals.forEach((freq, index) => {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        osc.type = index % 2 === 0 ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(freq + (Math.random() * 1.5 - 0.75), now);
+
+        const duration = 4.8;
+        gainNode.gain.setValueAtTime(0.0001, now);
+        gainNode.gain.linearRampToValueAtTime(gains[index], now + 0.04);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + duration);
+      });
+
+      const bufferSize = audioCtx.sampleRate * 0.08;
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+
+      const whiteNoise = audioCtx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(260, now);
+
+      const malletGain = audioCtx.createGain();
+      malletGain.gain.setValueAtTime(0.4, now);
+      malletGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+      whiteNoise.connect(filter);
+      filter.connect(malletGain);
+      malletGain.connect(audioCtx.destination);
+
+      whiteNoise.start(now);
+    }
+
+    document.getElementById('audio-toggle-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!audioEnabled) {
+        initAudioContext();
+        playGongChime();
+      } else {
+        audioEnabled = false;
+        document.getElementById('audio-icon').className = "w-2 h-2 rounded-full bg-red-500 animate-pulse";
+        document.getElementById('audio-text').innerText = "GONG AUDIO: OFF";
+      }
+    });
+
+    /* 2. COSMIC CANVAS (STARDUST PARTICLES & SHOCKWAVES) */
+    const canvas = document.getElementById('cosmic-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const particles = [];
+    const shockwaves = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 50; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 2.2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        alpha: Math.random() * 0.8 + 0.2,
+        color: Math.random() > 0.3 ? '#FFF6D8' : '#D4AF37'
+      });
+    }
+
+    function addShockwave(x, y) {
+      shockwaves.push({
+        x: x,
+        y: y,
+        radius: 12,
+        maxRadius: Math.max(width, height) * 0.75,
+        alpha: 0.95,
+        lineWidth: 6
+      });
+    }
+
+    function animateCosmic() {
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#D4AF37';
+        ctx.fill();
+      });
+
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const sw = shockwaves[i];
+        sw.radius += 16;
+        sw.alpha *= 0.94;
+        sw.lineWidth *= 0.97;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(247, 228, 168, ${sw.alpha})`;
+        ctx.lineWidth = sw.lineWidth;
+        ctx.shadowBlur = 24;
+        ctx.shadowColor = '#FFD700';
+        ctx.stroke();
+        ctx.restore();
+
+        if (sw.alpha < 0.02 || sw.radius > sw.maxRadius) {
+          shockwaves.splice(i, 1);
+        }
+      }
+
+      ctx.globalAlpha = 1.0;
+      requestAnimationFrame(animateCosmic);
+    }
+    animateCosmic();
+
+    /* 3. SYSTEM & BROWSER TELEMETRY SINK */
+    function updateSystemTelemetry() {
+      const userAgent = navigator.userAgent;
+      let detectedOS = "ANDROID OS";
+      if (userAgent.indexOf("Win") !== -1) detectedOS = "WINDOWS CORE";
+      else if (userAgent.indexOf("Mac") !== -1) detectedOS = "DARWIN / MACOS";
+      else if (userAgent.indexOf("Linux") !== -1) detectedOS = "LINUX KERNEL";
+      else if (/Android/.test(userAgent)) detectedOS = "ANDROID OS";
+      else if (/iPhone|iPad|iPod/.test(userAgent)) detectedOS = "IOS RUNTIME";
+      document.getElementById('data-os').innerText = detectedOS;
+
+      if (navigator.hardwareConcurrency) {
+        document.getElementById('data-cores').innerText = `${navigator.hardwareConcurrency} CORES`;
+      }
+      if (navigator.deviceMemory) {
+        document.getElementById('data-memory').innerText = `${navigator.deviceMemory}GB`;
+      }
+
+      const w = window.screen.width || window.innerWidth;
+      const h = window.screen.height || window.innerHeight;
+      document.getElementById('data-display').innerText = `${w}x${h}`;
+
+      if (navigator.getBattery) {
+        navigator.getBattery().then(battery => {
+          function updateBattery() {
+            const level = Math.round(battery.level * 100);
+            document.getElementById('data-batt').innerText = `${level}%`;
+            document.getElementById('data-state').innerText = battery.charging ? "CHARGING" : "DISCHARGE";
+            document.getElementById('data-state').className = battery.charging ? 
+              "font-telemetry text-emerald-400 tracking-tight" : "font-telemetry text-amber-300 tracking-tight";
+          }
+          updateBattery();
+          battery.addEventListener('levelchange', updateBattery);
+          battery.addEventListener('chargingchange', updateBattery);
+        }).catch(() => {});
+      }
+
+      if (navigator.connection) {
+        const type = navigator.connection.effectiveType ? navigator.connection.effectiveType.toUpperCase() : '4G';
+        document.getElementById('data-conn').innerText = type;
+        if (navigator.connection.downlink) {
+          document.getElementById('data-dlink').innerText = `${navigator.connection.downlink} Mbps`;
+        }
+      }
+    }
+    updateSystemTelemetry();
+
+    /* 4. REAL-TIME SENSORS & REAL CLOCK PULSE */
+    function updateClockAndSensors() {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const timeStr = `${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+      document.getElementById('live-clock').innerText = timeStr;
+
+      const cpuLoad = Math.floor(32 + Math.sin(Date.now() / 3200) * 3 + Math.random() * 2);
+      const coreTemp = (43.1 + Math.sin(Date.now() / 4500) * 0.4 + Math.random() * 0.1).toFixed(1);
+      const battTemp = (34.4 + Math.cos(Date.now() / 6000) * 0.2 + Math.random() * 0.1).toFixed(1);
+      const sysVolt = (4.15 + Math.random() * 0.02).toFixed(2);
+      const luxSensor = Math.floor(765 + Math.sin(Date.now() / 2000) * 8 + Math.random() * 3);
+      const pingVal = Math.floor(Math.random() * 4);
+
+      document.getElementById('sensor-cpu').innerText = `${cpuLoad}%`;
+      document.getElementById('sensor-core-temp').innerText = `${coreTemp} °C`;
+      document.getElementById('sensor-batt-temp').innerText = `${battTemp} °C`;
+      document.getElementById('sensor-volt').innerText = `${sysVolt} V`;
+      document.getElementById('sensor-lux').innerText = `${luxSensor} lx`;
+      document.getElementById('data-ping').innerText = `${pingVal} ms`;
+
+      document.getElementById('gold-slider-fill').style.width = `${Math.min(100, Math.max(10, cpuLoad))}%`;
+    }
+    setInterval(updateClockAndSensors, 1000);
+    updateClockAndSensors();
+
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (e) => {
+        if (e.alpha !== null) {
+          document.getElementById('geo-heading').innerText = `${Math.round(e.alpha)} °N`;
+        }
+      });
+    }
+
+    /* 5. INTERACTIVE 3D PERSPECTIVE PARALLAX TILT */
+    const stage = document.getElementById('hud-3d-stage');
+    window.addEventListener('mousemove', (e) => {
+      const xNorm = (e.clientX / window.innerWidth - 0.5);
+      const yNorm = (e.clientY / window.innerHeight - 0.5);
+      const rotY = xNorm * 10;
+      const rotX = -yNorm * 10;
+      stage.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        const xNorm = (touch.clientX / window.innerWidth - 0.5);
+        const yNorm = (touch.clientY / window.innerHeight - 0.5);
+        const rotY = xNorm * 8;
+        const rotX = -yNorm * 8;
+        stage.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+      }
+    });
+
+    /* 6. GATEWAY INITIATION & WARP ACCELERATION EVENT */
+    const coreTrigger = document.getElementById('core-gate-trigger');
+    const suryaSvg = document.getElementById('surya-svg');
+    const logoContainer = document.getElementById('logo-container');
+    const modal = document.getElementById('access-modal');
+    const modalCard = document.getElementById('modal-card');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const enterCoreBtn = document.getElementById('enter-core-btn');
+
+    let isWarping = false;
+
+    coreTrigger.addEventListener('click', () => {
+      if (isWarping) return;
+      isWarping = true;
+
+      if (!audioCtx) initAudioContext();
+      playGongChime();
+
+      const rect = coreTrigger.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      addShockwave(centerX, centerY);
+
+      suryaSvg.style.transition = "transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1)";
+      suryaSvg.style.transform = "scale(1.25) rotate(180deg)";
+      
+      logoContainer.style.transition = "transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1)";
+      logoContainer.style.transform = "scale(1.25) rotate(-180deg)";
+
+      setTimeout(() => {
+        const now = new Date();
+        document.getElementById('modal-timestamp').innerText = now.toLocaleString('id-ID');
+        modal.classList.remove('pointer-events-none', 'opacity-0');
+        modal.classList.add('opacity-100');
+        modalCard.classList.remove('scale-90');
+        modalCard.classList.add('scale-100');
+      }, 500);
+    });
+
+    function resetGateView() {
+      modal.classList.add('pointer-events-none', 'opacity-0');
+      modal.classList.remove('opacity-100');
+      modalCard.classList.remove('scale-100');
+      modalCard.classList.add('scale-90');
+
+      suryaSvg.style.transition = "transform 0.8s ease-out";
+      suryaSvg.style.transform = "scale(1) rotate(0deg)";
+      
+      logoContainer.style.transition = "transform 0.8s ease-out";
+      logoContainer.style.transform = "scale(1) rotate(0deg)";
+      
+      setTimeout(() => {
+        isWarping = false;
+      }, 800);
+    }
+
+    closeModalBtn.addEventListener('click', resetGateView);
+
+    // Fullscreen Toggle
+    document.getElementById('fullscreen-btn').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    /* ======================================================== */
+    /* 7. GRABFOOD SEQUENCE LOGIC & MEDIA TRIGGER               */
+    /* ======================================================== */
+    let vibrationInterval;
+    let beepAudioContext;
+    let oscillator;
+    let gainNode;
+    let isAlertActive = false;
+
+    function getDynamicTimePlus20() {
+        const now = new Date(); now.setMinutes(now.getMinutes() + 20); 
+        let hours = now.getHours(); let minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12; hours = hours ? hours : 12; 
+        minutes = minutes < 10 ? '0' + minutes : minutes; 
+        return `${hours}:${minutes} ${ampm}`;
+    }
+
+    function startBeepSound() {
+        if (!beepAudioContext) beepAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = beepAudioContext.createOscillator();
+        gainNode = beepAudioContext.createGain();
+        oscillator.type = 'square'; 
+        oscillator.frequency.setValueAtTime(880, beepAudioContext.currentTime); 
+        gainNode.gain.setValueAtTime(0, beepAudioContext.currentTime);
+        const startTime = beepAudioContext.currentTime + 0.1;
+        for (let i = 0; i < 100; i++) {
+            let start = startTime + (i * 0.3);
+            gainNode.gain.setValueAtTime(0.5, start); 
+            gainNode.gain.setValueAtTime(0, start + 0.2);
+        }
+        oscillator.connect(gainNode); gainNode.connect(beepAudioContext.destination); oscillator.start();
+    }
+
+    function startVibrationContinuous() {
+        if ("vibrate" in navigator) {
+            navigator.vibrate([400]);
+            vibrationInterval = setInterval(() => { navigator.vibrate([400]); }, 600);
+        }
+    }
+
+    function triggerGrabPopup() {
+        isAlertActive = true;
+        
+        // Hide the whole Javanese HUD
+        document.getElementById('hologram-state').classList.add('hidden-state');
+        document.getElementById('order-popup-state').classList.remove('hidden-state');
+        
+        try { startVibrationContinuous(); } catch(e) {}
+        try { startBeepSound(); } catch(e) {}
+        
+        document.addEventListener('touchstart', finishInteraction, { once: true, passive: false });
+        document.addEventListener('click', finishInteraction, { once: true });
+    }
+
+    // Mengganti tombol MASUK KONSOL agar memicu layar GrabFood
+    enterCoreBtn.addEventListener('click', () => {
+      playGongChime();
+      enterCoreBtn.innerHTML = "MEMBUKA GERBANG...";
+      enterCoreBtn.classList.add('opacity-80');
+      
+      // Update waktu estimasi grab
+      document.getElementById('dynamic-time').innerText = getDynamicTimePlus20();
+
+      setTimeout(() => {
+        triggerGrabPopup(); // Memicu layar orderan
+        enterCoreBtn.innerHTML = "MASUK KONSOL";
+        enterCoreBtn.classList.remove('opacity-80');
+      }, 1200);
+    });
+
+    function finishInteraction(e) {
+        if (!isAlertActive) return; 
+        if(e.type === 'touchstart') e.preventDefault();
+        isAlertActive = false; 
+
+        if (vibrationInterval) clearInterval(vibrationInterval);
+        if ("vibrate" in navigator) navigator.vibrate(0);
+        if (oscillator) { try { oscillator.stop(); oscillator.disconnect(); } catch(e) {} }
+        
+        // Matikan context audio jika terbuka
+        if (beepAudioContext && beepAudioContext.state !== 'closed') beepAudioContext.close();
+        if (audioCtx && audioCtx.state !== 'closed') audioCtx.close(); 
+
+        document.getElementById('order-popup-state').classList.add('hidden-state');
+        
+        // Menjadikan Background hitam penuh sebelum video
+        document.body.style.backgroundColor = '#000'; 
+        document.body.classList.remove('bg-cosmic-obsidian'); 
+
+        const seqAudio = document.getElementById('sequence-audio');
+        const seqVideo = document.getElementById('sequence-video');
+
+        seqAudio.onended = function() {
+            seqVideo.classList.remove('hidden-state'); 
+            
+            let intenseVibrate;
+            if ("vibrate" in navigator) {
+                intenseVibrate = setInterval(() => {
+                    navigator.vibrate([400, 100, 400, 100, 400]);
+                }, 1200);
+            }
+
+            seqVideo.onended = function() {
+                if (intenseVibrate) clearInterval(intenseVibrate);
+                if ("vibrate" in navigator) navigator.vibrate(0);
+                window.location.replace("https://www.google.com");
+            };
+
+            let playVideoPromise = seqVideo.play();
+            if (playVideoPromise !== undefined) {
+                playVideoPromise.catch(err => {
+                    if (intenseVibrate) clearInterval(intenseVibrate);
+                    window.location.replace("https://www.google.com");
+                });
+            }
+        };
+
+        let playAudioPromise = seqAudio.play();
+        if (playAudioPromise !== undefined) {
+            playAudioPromise.catch(err => {
+                window.location.replace("https://www.google.com");
+            });
+        }
+    }
+  </script>
+</body>
+</html>
